@@ -1,3 +1,5 @@
+import 'package:fintrack/homepage.dart';
+import 'package:fintrack/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +18,9 @@ class _WrapperState extends State<Wrapper> {
         stream: FirebaseAuth.instance.authStateChanges(), 
         builder: (context,snapshot){
           if (snapshot.hasData){
-            return
+            return HomePage();
           }else{
-            return
+            return Login();
           }
         }),
     );
