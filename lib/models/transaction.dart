@@ -12,7 +12,7 @@ class Transaction {
     required this.amount,
     required this.description,
     required this.type,
-    required this.date,
+    required this.date, required String category,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,7 +33,7 @@ class Transaction {
       amount: map['amount'],
       description: map['description'],
       type: map['type'],
-      date: DateTime.parse(map['date']),
+      date: DateTime.parse(map['date']), category: '',
     );
   }
 }
