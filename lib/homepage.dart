@@ -22,9 +22,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
-      body: Center(
-        child: Text('${user!.email}'),
-      ),
+      // body: Center(
+      //   child: Text('${user!.email}'),
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed:(()=>signout()),
         child: Icon(Icons.login_rounded),
