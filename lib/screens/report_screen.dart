@@ -23,9 +23,14 @@ class _ReportScreenState extends State<ReportScreen> {
 
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
-      if (userId == null) return;
+      if (userId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('User not logged in')),
+        );
+        return;
+      }
 
-      // Fetch transactions for the selected period
+      // Fetch transactions
       final snapshot = await firestore.FirebaseFirestore.instance
           .collection('transactions')
           .where('userId', isEqualTo: userId)
@@ -33,20 +38,42 @@ class _ReportScreenState extends State<ReportScreen> {
           .where('date', isLessThanOrEqualTo: _endDate.toIso8601String())
           .get();
 
-      final transactions = snapshot.docs
-          .map((doc) => fintrack.Transaction.fromMap({...doc.data() as Map<String, dynamic>, 'id': doc.id}))
-          .toList();
+      if (snapshot.docs.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No transactions found for selected period')),
+        );
+        return;
+      }
 
+      // Convert to Transaction objects
+      final transactions = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return fintrack.Transaction(
+          id: doc.id,
+          userId: data['userId'] as String,
+          amount: (data['amount'] as num).toDouble(),
+          category: data['category'] as String,
+          description: data['description'] as String,
+          date: DateTime.parse(data['date'] as String),
+          type: data['type'] as String,
+        );
+      }).toList();
+
+      // Generate and open report
       final file = await _reportService.generateReport(
         transactions,
         _startDate,
         _endDate,
       );
 
-      await OpenFile.open(file.path);
+      final result = await OpenFile.open(file.path);
+      if (result.type != ResultType.done) {
+        throw Exception('Could not open file: ${result.message}');
+      }
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error generating report: $e')),
+        SnackBar(content: Text('Error: ${e.toString()}')),
       );
     } finally {
       setState(() => _isGenerating = false);
