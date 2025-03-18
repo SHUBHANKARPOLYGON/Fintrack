@@ -2,17 +2,19 @@ class Transaction {
   final String id;
   final String userId;
   final double amount;
+  final String category;
   final String description;
-  final String type;
   final DateTime date;
+  final String type;
 
   Transaction({
     required this.id,
     required this.userId,
     required this.amount,
+    required this.category,
     required this.description,
+    required this.date,
     required this.type,
-    required this.date, required String category,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,9 +22,10 @@ class Transaction {
       'id': id,
       'userId': userId,
       'amount': amount,
+      'category': category,
       'description': description,
-      'type': type,
       'date': date.toIso8601String(),
+      'type': type,
     };
   }
 
@@ -30,10 +33,11 @@ class Transaction {
     return Transaction(
       id: map['id'],
       userId: map['userId'],
-      amount: map['amount'],
+      amount: map['amount'].toDouble(),
+      category: map['category'],
       description: map['description'],
+      date: DateTime.parse(map['date']),
       type: map['type'],
-      date: DateTime.parse(map['date']), category: '',
     );
   }
 }

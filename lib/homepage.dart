@@ -1,8 +1,8 @@
-import 'package:fintrack/transaction_screen.dart';
+import 'package:fintrack/screens/transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'transaction_screen.dart';
+import 'screens/transaction_screen.dart';
 import 'services/database_service.dart';
 
 class HomePage extends StatefulWidget {
