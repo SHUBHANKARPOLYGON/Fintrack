@@ -148,7 +148,7 @@ class FinancialOverviewScreen extends StatelessWidget {
                             isImportant: true,
                           ),
                         const SizedBox(height: 12),
-                        Text(
+                        const Text(
                           'Monthly Overview:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
