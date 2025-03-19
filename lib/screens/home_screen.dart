@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'transaction_screen.dart';
 import '../widgets/transaction_list.dart'; // Ensure this import is correct and the file exists
 import '../widgets/transaction_summary.dart';
+import './pie_chart.dart'; // Add this import
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,6 +20,19 @@ class _HomePageState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('FinTrack'),
         actions: [
+          IconButton(
+            icon: Icon(Icons.pie_chart), // Add pie chart icon
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FinancialOverviewScreen(
+                    userId: user?.uid ?? '',
+                  ),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.summarize),
             onPressed: () {

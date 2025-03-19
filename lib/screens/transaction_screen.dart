@@ -4,7 +4,10 @@ import '../../services/database_service.dart';
 import '../../models/transaction.dart';
 
 class AddTransactionScreen extends StatefulWidget {
+  const AddTransactionScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AddTransactionScreenState createState() => _AddTransactionScreenState();
 }
 
