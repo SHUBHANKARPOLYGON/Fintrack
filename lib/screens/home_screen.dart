@@ -2,7 +2,7 @@ import 'package:fintrack/screens/report_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'transaction_screen.dart';
-import '../widgets/transaction_list.dart'; // Ensure this import is correct and the file exists
+import '../widgets/transaction_list.dart'; 
 import '../widgets/transaction_summary.dart';
 import './pie_chart.dart'; // Add this import
 
