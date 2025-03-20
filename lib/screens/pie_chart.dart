@@ -32,16 +32,39 @@ class FinancialOverviewScreen extends StatelessWidget {
 
           final transactions = snapshot.data!.docs;
           
-          // Calculate total income and expenses
-          double totalIncome = 0;
+          // Define category colors
+          final Map<String, Color> categoryColors = {
+            'Food': Colors.orange,
+            'Transportation': Colors.blue,
+            'Entertainment': Colors.purple,
+            'Shopping': Colors.pink,
+            'Bills': Colors.red,
+            'Others': Colors.grey,
+          };
+
+          // Calculate expenses by category
+          Map<String, double> categoryExpenses = {
+            'Food': 0,
+            'Transportation': 0,
+            'Entertainment': 0,
+            'Shopping': 0,
+            'Bills': 0,
+            'Others': 0,
+          };
+
           double totalExpenses = 0;
+          double totalIncome = 0;  // Added totalIncome declaration
 
           for (var doc in transactions) {
             final data = doc.data() as Map<String, dynamic>;
-            if (data['type'] == 'income') {
-              totalIncome += (data['amount'] as num).toDouble();
-            } else if (data['type'] == 'expense') {
-              totalExpenses += (data['amount'] as num).toDouble();
+            if (data['type'] == 'expense') {
+              final category = data['category'] as String? ?? 'Others';
+              final amount = (data['amount'] as num).toDouble();
+              categoryExpenses[category] = (categoryExpenses[category] ?? 0) + amount;
+              totalExpenses += amount;
+            } else if (data['type'] == 'income') {  // Added income calculation
+              final amount = (data['amount'] as num).toDouble();
+              totalIncome += amount;
             }
           }
 
@@ -53,32 +76,70 @@ class FinancialOverviewScreen extends StatelessWidget {
                   height: 300,
                   child: PieChart(
                     PieChartData(
-                      sections: [
-                        if (totalIncome > 0)
-                          PieChartSectionData(
-                            color: Colors.green,
-                            value: totalIncome,
-                            title: 'Income\n₹${totalIncome.toStringAsFixed(2)}',
-                            radius: 100,
-                            titleStyle: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      sections: categoryExpenses.entries
+                          .where((e) => e.value > 0) // Only show categories with expenses
+                          .map((entry) {
+                        final percentage = (entry.value / totalExpenses * 100);
+                        return PieChartSectionData(
+                          color: categoryColors[entry.key] ?? Colors.grey,
+                          value: entry.value,
+                          title: '${entry.key}\n${percentage.toStringAsFixed(1)}%',
+                          radius: 100,
+                          titleStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
                           ),
-                        if (totalExpenses > 0)
-                          PieChartSectionData(
-                            color: Colors.red,
-                            value: totalExpenses,
-                            title: 'Expenses\n₹${totalExpenses.toStringAsFixed(2)}',
-                            radius: 100,
-                            titleStyle: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                      ],
+                        );
+                      }).toList(),
                       sectionsSpace: 2,
                       centerSpaceRadius: 40,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Category Legend
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Expense Categories',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ...categoryExpenses.entries
+                            .where((e) => e.value > 0)
+                            .map((entry) {
+                          final percentage = (entry.value / totalExpenses * 100);
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 16,
+                                  height: 16,
+                                  decoration: BoxDecoration(
+                                    color: categoryColors[entry.key],
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    '${entry.key}: ₹${entry.value.toStringAsFixed(0)} (${percentage.toStringAsFixed(1)}%)',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ],
                     ),
                   ),
                 ),
