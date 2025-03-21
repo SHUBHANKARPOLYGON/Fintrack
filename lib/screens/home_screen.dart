@@ -1,4 +1,7 @@
+import 'package:fintrack/screens/bill_reminders.dart';
+import 'package:fintrack/screens/budget_planner.dart';
 import 'package:fintrack/screens/report_screen.dart';
+import 'package:fintrack/screens/savings_goals.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'transaction_screen.dart';
@@ -58,6 +61,49 @@ class _HomePageState extends State<HomeScreen> {
             child: TransactionList(userId: user?.uid ?? ''),
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              child: Text('Navigation'),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 30, 153, 236),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.calculate),
+              title: const Text('Budget Planner'),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BudgetPlannerScreen(userId: user?.uid ?? ''),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.notification_important),
+              title: const Text('Bill Reminders'),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BillRemindersScreen(userId: user?.uid ?? ''),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.savings),
+              title: const Text('Savings Goals'),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SavingsGoalsScreen(userId: user?.uid ?? ''),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
