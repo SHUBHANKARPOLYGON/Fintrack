@@ -48,6 +48,8 @@ dependencies:
   pdf: ^3.11.3
   open_file: ^3.5.10
   local_auth: ^2.3.0
+  # flutter_local_notifications: ^19.0.0
+  # timezone: ^0.10.0
 
 dev_dependencies:
   flutter_test:

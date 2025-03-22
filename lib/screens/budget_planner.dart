@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class BudgetPlannerScreen extends StatelessWidget {
   final String userId;
 
-  const BudgetPlannerScreen({Key? key, required this.userId}) : super(key: key);
+  const BudgetPlannerScreen({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +37,12 @@ class BudgetPlannerScreen extends StatelessWidget {
             itemCount: budgets.length,
             itemBuilder: (context, index) {
               final budget = budgets[index].data() as Map<String, dynamic>;
+              final budgetId = budgets[index].id;  // Get the document ID
               return _buildBudgetCard(
+                context: context,
                 category: budget['category'],
                 budget: (budget['amount'] as num).toDouble(),
+                budgetId: budgetId,
               );
             },
           );
@@ -111,8 +114,12 @@ class BudgetPlannerScreen extends StatelessWidget {
       },
     );
   }
-
-  Widget _buildBudgetCard({required String category, required double budget}) {
+  Widget _buildBudgetCard({
+    required BuildContext context,
+    required String category, 
+    required double budget,
+    required String budgetId,  // Add this parameter
+  }) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
@@ -127,7 +134,50 @@ class BudgetPlannerScreen extends StatelessWidget {
           'Budget: ₹${budget.toStringAsFixed(2)}',
           style: const TextStyle(fontSize: 14),
         ),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete, color: Colors.red),
+          onPressed: () => _showDeleteConfirmationDialog(context, budgetId, category),
+        ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String budgetId, String category) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Budget'),
+          content: Text('Are you sure you want to delete $category budget?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              onPressed: () async {
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('budgets')
+                      .doc(budgetId)
+                      .delete();
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('$category budget deleted successfully')),
+                  );
+                } catch (e) {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error deleting budget: $e')),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
