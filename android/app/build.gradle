@@ -8,25 +8,25 @@ plugins {
 
 android {
     namespace = "com.example.fintrack"
-    compileSdkVersion 33  // Changed from 35 to 33
+    compileSdkVersion 34  // Downgraded to 33
     ndkVersion = flutter.ndkVersion
 
     defaultConfig {
         applicationId = "com.example.fintrack"
         minSdkVersion 23
-        targetSdkVersion 33  // Changed from 35 to 33
+        targetSdkVersion 34 // Downgraded to 33
         versionCode flutter.versionCode
         versionName flutter.versionName
         multiDexEnabled true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8  // Downgraded to Java 8
+        targetCompatibility JavaVersion.VERSION_1_8  // Downgraded to Java 8
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '1.8'  // Downgraded to Java 8
     }
 
     buildTypes {
@@ -50,7 +50,7 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:32.7.2')  // Updated version
+    implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.google.firebase:firebase-analytics'
 }
