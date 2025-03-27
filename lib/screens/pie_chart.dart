@@ -53,7 +53,7 @@ class FinancialOverviewScreen extends StatelessWidget {
           };
 
           double totalExpenses = 0;
-          double totalIncome = 0;  // Added totalIncome declaration
+          double totalIncome = 0;  
 
           for (var doc in transactions) {
             final data = doc.data() as Map<String, dynamic>;
@@ -62,7 +62,7 @@ class FinancialOverviewScreen extends StatelessWidget {
               final amount = (data['amount'] as num).toDouble();
               categoryExpenses[category] = (categoryExpenses[category] ?? 0) + amount;
               totalExpenses += amount;
-            } else if (data['type'] == 'income') {  // Added income calculation
+            } else if (data['type'] == 'income') { 
               final amount = (data['amount'] as num).toDouble();
               totalIncome += amount;
             }
