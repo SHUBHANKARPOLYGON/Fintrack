@@ -52,7 +52,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation 'com.google.firebase:firebase-analytics'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22"
-    implementation "io.flutter:flutter_embedding:1.0.0"
+    debugImplementation "io.flutter:flutter_embedding_debug:1.0.0-3316dd8728419ad3534e3f6112aa6291f587078a"
+    profileImplementation "io.flutter:flutter_embedding_profile:1.0.0-3316dd8728419ad3534e3f6112aa6291f587078a"
+    releaseImplementation "io.flutter:flutter_embedding_release:1.0.0-3316dd8728419ad3534e3f6112aa6291f587078a"
     implementation "androidx.core:core-ktx:1.12.0"
 }
 
