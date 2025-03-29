@@ -1,6 +1,6 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android" 
+    id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services'
 }
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.fintrack"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 34  // Changed to match compileSdkVersion
         versionCode flutter.versionCode
         versionName flutter.versionName
@@ -23,6 +23,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
+    java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+  }
 
     kotlinOptions {
         jvmTarget = '17'
@@ -51,10 +57,12 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.annotation:annotation:1.7.1'
     debugImplementation "io.flutter:flutter_embedding_debug:1.0.0-3316dd8728419ad3534e3f6112aa6291f587078a"
     profileImplementation "io.flutter:flutter_embedding_profile:1.0.0-3316dd8728419ad3534e3f6112aa6291f587078a"
     releaseImplementation "io.flutter:flutter_embedding_release:1.0.0-3316dd8728419ad3534e3f6112aa6291f587078a"
-    implementation "androidx.core:core-ktx:1.12.0"
+    implementation 'androidx.core:core:1.12.0'
+    // implementation project(':flutter')
 }
 
