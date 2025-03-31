@@ -1,6 +1,9 @@
+// Top-level build.gradle file
+
 buildscript {
     ext.kotlin_version = '1.9.22'
     ext.java_version = JavaVersion.VERSION_17
+
     repositories {
         google()
         mavenCentral()
@@ -13,23 +16,25 @@ buildscript {
     }
 }
 
-// Add Java version compatibility
+// Set Java compatibility for all projects
 allprojects {
     tasks.withType(JavaCompile) {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        sourceCompatibility = java_version
+        targetCompatibility = java_version
     }
 }
 
+// Define repositories for dependencies
 allprojects {
     repositories {
         google()
         mavenCentral()
-        // Add this if needed for some dependencies
-        jcenter() 
+        jcenter() // Optional, only if needed
     }
 }
 
+// Configure build directories
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
