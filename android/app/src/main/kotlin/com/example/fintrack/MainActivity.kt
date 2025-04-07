@@ -1,6 +1,5 @@
-package com.example.fintrack;
+package com.example.fintrack
 
-import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.android.FlutterActivity
 
-public class MainActivity: FlutterActivity() {
-}
+class MainActivity : FlutterActivity()

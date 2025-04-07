@@ -1,2 +1,0 @@
-D:/01 SKILL's SET/FLutter and Dart/fintrack/android/app/.cxx/Debug/e301538l/x86_64/CMakeFiles/edit_cache.dir
-D:/01 SKILL's SET/FLutter and Dart/fintrack/android/app/.cxx/Debug/e301538l/x86_64/CMakeFiles/rebuild_cache.dir
